@@ -8,14 +8,15 @@ app.use(cors());
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
+// Rota principal (teste)
 app.get("/", (req, res) => {
   res.send("Servidor funcionando 🚀");
 });
 
+// Rota que cria o checkout
 app.get("/create-checkout-session", async (req, res) => {
   try {
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ["card"],
       mode: "payment",
       line_items: [
         {
@@ -33,13 +34,14 @@ app.get("/create-checkout-session", async (req, res) => {
       cancel_url: "https://google.com",
     });
 
-    res.redirect(session.url);
+    return res.redirect(303, session.url);
 
   } catch (error) {
-    console.error(error);
-    res.status(500).send("Erro ao criar sessão");
+    console.error("Erro Stripe:", error);
+    return res.status(500).send("Erro ao criar checkout");
   }
 });
 
+// Porta correta do Render
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log("Servidor rodando na porta " + PORT));
