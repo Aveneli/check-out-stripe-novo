@@ -29,6 +29,9 @@ app.post("/create-checkout-session", async (req, res) => {
 
   } catch (error) {
     res.status(500).json({ error: error.message });
+    app.get("/", (req, res) => {
+  res.send("Servidor funcionando 🚀");
+});
   }
 });
 
