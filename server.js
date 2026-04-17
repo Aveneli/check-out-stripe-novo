@@ -4,7 +4,7 @@ const cors = require("cors");
 
 const app = express();
 app.use(express.json());
-app.use(cors()); // 👈 LIBERA O ACESSO
+app.use(cors());
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -12,7 +12,7 @@ app.get("/", (req, res) => {
   res.send("Servidor funcionando 🚀");
 });
 
-app.post("/create-checkout-session", async (req, res) => {
+app.get("/create-checkout-session", async (req, res) => {
   try {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
@@ -29,15 +29,15 @@ app.post("/create-checkout-session", async (req, res) => {
           quantity: 1,
         },
       ],
-      success_url: "https://seusite.com/sucesso",
-      cancel_url: "https://seusite.com/cancelado",
+      success_url: "https://google.com",
+      cancel_url: "https://google.com",
     });
 
-    res.json({ url: session.url });
+    res.redirect(session.url);
 
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: error.message });
+    res.status(500).send("Erro ao criar sessão");
   }
 });
 
