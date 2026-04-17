@@ -6,7 +6,8 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+// 🔥 COLE SUA CHAVE AQUI (temporário para teste)
+const stripe = new Stripe("sk_test_51TNFZ9KmwkOVnJcVrxjiI5Q92lbrkjPyHesxFQYdALc0IL4q6d4uvYvg2ja8M9Xr0YEWYVNgsFmmAPlsLF76qjD400Lb55aHej");
 
 // Rota principal (teste)
 app.get("/", (req, res) => {
